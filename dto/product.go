@@ -6,7 +6,7 @@ type ProductRequest struct {
 	Desc       string  `form:"desc"`
 	Price      float64 `form:"price" binding:"required"`
 	Status     uint    `form:"status" binding:"required"`
-	CategoryID uint    `form:"categoryID" binding:"required"`
+	CategoryID uint    `form:"categoryId" binding:"required"`
 }
 
 type CreateOrUpdateProductResponse struct {
