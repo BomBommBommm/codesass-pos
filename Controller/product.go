@@ -120,8 +120,52 @@ func (p Product) Create(ctx *gin.Context) {
 	})
 }
 func (p Product) Update(ctx *gin.Context) {
+	id := ctx.Param("id")
+	var form dto.ProductRequest
+	if err := ctx.ShouldBind(&form); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	var product model.Product
+	query := db.Conn.Preload("Category").First(&product, id)
+	if err := query.Error; errors.Is(err, gorm.ErrRecordNotFound){
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
 
+	image, err := ctx.FormFile("image")
+	if err != nil && !errors.Is(err, http.ErrMissingFile) {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	if image != nil{
+		imagePath := "./uploads/products/" + uuid.New().String()
+		ctx.SaveUploadedFile(image,imagePath)
+		os.Remove(product.Image)
+		product.Image = imagePath
+	}
+	product.SKU = form.SKU
+	product.Name = form.Name
+	product.Desc = form.Desc
+	product.Price = form.Price
+	product.Status = form.Status
+	product.CategoryID = form.CategoryID
+	db.Conn.Save(&product)
+
+	ctx.JSON(http.StatusOK, dto.CreateOrUpdateProductResponse{
+		ID: product.ID,
+		SKU: product.SKU,
+		Name: product.Name,
+		Desc: product.Desc,
+		Price: product.Price,
+		Status: product.Status,
+		CategoryID: product.CategoryID,
+		Image: product.Image,
+	})
 }
 func (p Product) Delete(ctx *gin.Context) {
-
+	id := ctx.Param("id")
+	db.Conn.Unscoped().Delete(&model.Product{}, id)
+	ctx.JSON(http.StatusOK, gin.H{"deletedAt": time.Now()})
 }  
