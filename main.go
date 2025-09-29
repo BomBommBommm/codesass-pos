@@ -1,7 +1,7 @@
 package main
 
 import (
-	"codezard-pos/db"
+	"demo-golang-pos/db"
 	"log"
 	"os"
 

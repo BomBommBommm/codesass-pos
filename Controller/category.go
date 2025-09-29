@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"codezard-pos/db"
-	"codezard-pos/dto"
-	"codezard-pos/model"
+	"demo-golang-pos/db"
+	"demo-golang-pos/dto"
+	"demo-golang-pos/model"
 	"errors"
 	"net/http"
 	"time"

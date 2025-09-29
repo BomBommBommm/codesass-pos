@@ -1,7 +1,7 @@
 package db
 
 import (
-	"codezard-pos/model"
+	"demo-golang-pos/model"
 	"fmt"
 	"log"
 	"os"

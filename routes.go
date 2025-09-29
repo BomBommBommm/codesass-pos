@@ -1,7 +1,7 @@
 package main
 
 import (
-	controller "codezard-pos/Controller"
+	controller "demo-golang-pos/Controller"
 
 	"github.com/gin-gonic/gin"
 )
