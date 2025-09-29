@@ -1,5 +1,4 @@
-module codezard-pos
-
+module demo-golang-pos
 go 1.25.0
 
 require (
